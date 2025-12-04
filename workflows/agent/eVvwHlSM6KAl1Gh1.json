@@ -1,5 +1,116 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T04:05:56.253Z",
+    "createdAt": "2025-12-04T04:05:56.253Z",
+    "versionId": "5fa6b534-58e2-43bd-a5ac-89a4b55fe545",
+    "workflowId": "eVvwHlSM6KAl1Gh1",
+    "nodes": [
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.4,
+        "position": [
+          -208,
+          -96
+        ],
+        "id": "5a50bc94-3e76-4c6b-b950-0036c322a2d4",
+        "name": "When chat message received",
+        "webhookId": "57d89915-df09-4576-8222-134e4fbaf92e"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3,
+        "position": [
+          32,
+          -96
+        ],
+        "id": "22293edb-6d81-4f62-b776-c03958c33018",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": "exaone3.5:7.8b",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+        "typeVersion": 1,
+        "position": [
+          -32,
+          192
+        ],
+        "id": "075d0151-9698-4907-afd4-04b58f8ac787",
+        "name": "Ollama Chat Model",
+        "credentials": {
+          "ollamaApi": {
+            "id": "2YzxMutZwVIPl4Tf",
+            "name": "Ollama account"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+        "typeVersion": 1.5,
+        "position": [
+          160,
+          208
+        ],
+        "id": "47a470bd-315f-4b9d-9cdd-da46ae76033d",
+        "name": "Redis Chat Memory",
+        "credentials": {
+          "redis": {
+            "id": "QryNMb6ebG7WaDgb",
+            "name": "Redis account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When chat message received": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ollama Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Redis Chat Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "5fa6b534-58e2-43bd-a5ac-89a4b55fe545",
   "connections": {
     "When chat message received": {
       "main": [
