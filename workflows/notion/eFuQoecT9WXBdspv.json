@@ -1,0 +1,91 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get many database pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-04T03:26:40.578Z",
+  "id": "eFuQoecT9WXBdspv",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "notion db page",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        -16
+      ],
+      "id": "64d56050-fd48-4cb6-9336-3242ac84903a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "1cb7b705-61d5-8195-b1d2-c8c498ca3298",
+          "mode": "list",
+          "cachedResultName": "프롬프트 허브_DB_NS",
+          "cachedResultUrl": "https://www.notion.so/1cb7b70561d58195b1d2c8c498ca3298"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        -16,
+        -16
+      ],
+      "id": "faee7f6c-854c-40ff-b062-d9bab294f00c",
+      "name": "Get many database pages",
+      "credentials": {
+        "notionApi": {
+          "id": "PPQ6AqvOO4WFhJt7",
+          "name": "Notion account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-04T03:26:40.578Z",
+      "createdAt": "2025-12-04T03:26:40.578Z",
+      "role": "workflow:owner",
+      "workflowId": "eFuQoecT9WXBdspv",
+      "projectId": "fXIt88XxLulj28GO"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-12-04T03:28:50.553Z",
+      "createdAt": "2025-12-04T03:28:50.553Z",
+      "id": "d2z6Qt1RF7UzWFFu",
+      "name": "notion"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-04T03:28:56.304Z",
+  "versionId": "0dfcc005-dea3-4929-be8b-7e7ba24a3e27"
+}
