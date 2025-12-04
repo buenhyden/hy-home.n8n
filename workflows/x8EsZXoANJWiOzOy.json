@@ -1,0 +1,82 @@
+{
+  "active": false,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many workflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-04T02:40:10.186Z",
+  "id": "x8EsZXoANJWiOzOy",
+  "isArchived": true,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Backup",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 22
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -480,
+        0
+      ],
+      "id": "9c740a1f-2d9f-4ef3-af84-9396242c9f2d",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        0
+      ],
+      "id": "3f33ac27-66d2-4b08-a034-13ca214481f7",
+      "name": "Get many workflows",
+      "credentials": {
+        "n8nApi": {
+          "id": "zCbQvDSgTm29guNI",
+          "name": "n8n account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-04T02:40:10.186Z",
+      "createdAt": "2025-12-04T02:40:10.186Z",
+      "role": "workflow:owner",
+      "workflowId": "x8EsZXoANJWiOzOy",
+      "projectId": "fXIt88XxLulj28GO"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-04T03:16:09.158Z",
+  "versionId": "8103f6b8-2d60-45c4-a449-dd439806f175"
+}
