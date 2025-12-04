@@ -1,0 +1,344 @@
+{
+  "active": true,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-03T04:10:29.815Z",
+  "id": "1Y7JAkjPLdXzoL3d",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "News Crawling",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -352,
+        -144
+      ],
+      "id": "5fe6fb8d-4f92-466b-9cf5-5494007fdaf1",
+      "name": "When clicking ‘Execute workflow’",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0A16RTTMGA",
+          "mode": "list",
+          "cachedResultName": "n8n"
+        },
+        "messageType": "block",
+        "blocksUi": "={{ $json.slackBlocksJson }}",
+        "text": "={{ $json.slackText }}",
+        "otherOptions": {
+          "mrkdwn": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        704,
+        0
+      ],
+      "id": "a4baac72-b808-4fd6-97f0-493d864ae3fa",
+      "name": "Send a message",
+      "webhookId": "feb9e5b1-1130-4000-8c83-d41ab0abfc1e",
+      "alwaysOutputData": false,
+      "credentials": {
+        "slackApi": {
+          "id": "19HmNrOnOqP2Fvue",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 * * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -352,
+        112
+      ],
+      "id": "4f144537-17d2-43be-ba80-dd400276a9a6",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://openapi.naver.com/v1/search/news.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "IT"
+            },
+            {
+              "name": "display",
+              "value": "5"
+            },
+            {
+              "name": "start",
+              "value": "1"
+            },
+            {
+              "name": "sort",
+              "value": "sim"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Naver-Client-Id",
+              "value": "qR7ty7ZP6XMG1eZHf7Xo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        16,
+        -144
+      ],
+      "id": "c897d317-c57d-4fd2-8e95-ed27509ac4e0",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "9eaUgMH4xE4sfnrN",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. 모든 입력 데이터에서 뉴스 항목 수집 (Aggregation)\nlet allNews = $json.combinedResult;\n\n\n// 2. 메시지 블록 초기화 (Slack Block Kit)\nlet slackBlocks = [\n  {\n    \"type\": \"header\",\n    \"text\": {\n      \"type\": \"plain_text\",\n      \"text\": \"📢 IT & 스타트업 뉴스 검색 10\",\n      \"emoji\": true\n    }\n  },\n  {\n    \"type\": \"divider\"\n  }\n];\n\n// 3. 데이터가 없는 경우 처리\nif (allNews.length === 0) {\n  const noDataMsg = \"검색된 뉴스 결과가 없습니다.\";\n  slackBlocks.push({\n    \"type\": \"section\",\n    \"text\": {\n      \"type\": \"mrkdwn\",\n      \"text\": noDataMsg\n    }\n  });\n\n  // { blocks: [...] } 구조로 래핑\n  const finalPayload = { blocks: slackBlocks };\n\n  return [{\n    json: { \n      slackText: noDataMsg,\n      slackBlocks: finalPayload,\n      slackBlocksJson: JSON.stringify(finalPayload)\n    }\n  }];\n}\n\n// 4. 상위 10개 항목만 추출 (요청사항 반영)\nconst topNews = allNews.slice(0, 10);\n\n// 5. 각 뉴스 항목을 순회하며 슬랙 블록 구성\nfor (const [index, news] of topNews.entries()) {\n  \n  // (1) 데이터 정제 (HTML 태그 제거 및 디코딩)\n  let titleStr = news.title || \"제목 없음\";\n  let descStr = news.description || \"내용 없음\";\n\n  let cleanTitle = titleStr.replace(/<[^>]*>?/gm, '');\n  let cleanDesc = descStr.replace(/<[^>]*>?/gm, '');\n\n  const decodeEntities = (str) => {\n    return str\n      .replace(/&quot;/g, '\"')\n      .replace(/&amp;/g, '&')\n      .replace(/&lt;/g, '<')\n      .replace(/&gt;/g, '>')\n      .replace(/&#39;/g, \"'\");\n  };\n\n  cleanTitle = decodeEntities(cleanTitle);\n  cleanDesc = decodeEntities(cleanDesc);\n\n  // (2) 날짜 포맷팅\n  let pubDateStr = \"\";\n  try {\n    if (news.pubDate) {\n        const pubDate = new Date(news.pubDate);\n        pubDateStr = pubDate.toLocaleDateString('ko-KR', { \n        year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' \n        });\n    } else {\n        pubDateStr = \"날짜 정보 없음\";\n    }\n  } catch (e) {\n    pubDateStr = news.pubDate;\n  }\n\n  // 링크 주소\n  const linkUrl = news.originallink || news.link || \"https://naver.com\";\n\n  // (3) 슬랙 블록 추가 (버튼을 기사 옆으로 이동)\n  slackBlocks.push({\n    \"type\": \"section\",\n    \"text\": {\n      \"type\": \"mrkdwn\",\n      \"text\": `*${index + 1}. ${cleanTitle}*\\n🗓 ${pubDateStr}\\n${cleanDesc}`\n    },\n    \"accessory\": {\n      \"type\": \"button\",\n      \"text\": {\n        \"type\": \"plain_text\",\n        \"text\": \"기사 보기\",\n        \"emoji\": true\n      },\n      \"value\": `click_news_${index + 1}`,\n      \"url\": linkUrl,\n      \"action_id\": `button-action-${index}`\n    }\n  });\n\n  // 구분선 (행 구분 역할)\n  slackBlocks.push({ \"type\": \"divider\" });\n}\n\n// 6. 결과 반환\n// 요청하신 { blocks: [...] } 형태의 객체 구조 생성\nconst finalPayload = { blocks: slackBlocks };\n\nreturn [{\n  json: {\n    // 텍스트 알림용\n    slackText: \"📢 IT & 스타트업 뉴스 검색 10\",\n    // 1. 객체 형태 (n8n 설정에 따라 사용)\n    slackBlocks: finalPayload,\n    // 2. JSON 문자열 형태 (HTTP Request 등으로 보낼 때 유용)\n    slackBlocksJson: JSON.stringify(finalPayload)\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        528,
+        0
+      ],
+      "id": "556c4d09-172f-4dd1-8919-b0e5ffdf284f",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "url": "https://openapi.naver.com/v1/search/news.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "스타트업"
+            },
+            {
+              "name": "display",
+              "value": "5"
+            },
+            {
+              "name": "start",
+              "value": "1"
+            },
+            {
+              "name": "sort",
+              "value": "sim"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Naver-Client-Id",
+              "value": "qR7ty7ZP6XMG1eZHf7Xo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        16,
+        112
+      ],
+      "id": "5bc7435d-5c76-4559-bc75-680678e620ca",
+      "name": "HTTP Request1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "9eaUgMH4xE4sfnrN",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. 데이터를 가져올 노드들의 이름을 배열로 적으세요.\n// (실제 n8n 캔버스에 있는 노드 이름과 정확히 일치해야 합니다)\nconst nodeNames = ['HTTP Request', 'HTTP Request1'];\n\n// 2. 합치고 싶은 JSON의 키(Key) 이름을 적으세요.\nconst targetKey = 'items';\n\n// 통합된 배열을 담을 변수\nlet mergedArray = [];\n\n// 3. 각 노드를 순회하며 데이터를 수집합니다.\nfor (const nodeName of nodeNames) {\n  // 해당 노드의 모든 아이템을 가져옵니다.\n  // 노드가 실행되지 않았거나 데이터가 없을 경우를 대비해 try-catch 또는 옵셔널 체이닝을 쓸 수 있습니다.\n  let items = [];\n  try {\n    items = $(nodeName).all();\n  } catch (error) {\n    // 해당 노드가 실행되지 않았으면 무시하고 넘어갑니다.\n    continue;\n  }\n\n  for (const item of items) {\n    // 해당 키의 값을 가져옵니다.\n    const value = item.json[targetKey];\n\n    // 값이 배열인 경우에만 합칩니다.\n    if (Array.isArray(value)) {\n      mergedArray = mergedArray.concat(value);\n    } \n    // 만약 배열이 아니라 단일 값이라면 배열로 만들어 넣습니다. (유연성 확보)\n    else if (value !== undefined && value !== null) {\n      mergedArray.push(value);\n    }\n  }\n}\n\n// 4. (선택사항) 중복 제거 (Deduplication)\n// \"Banana\"가 두 번 들어가는 것을 막고 싶다면 아래 줄을 사용하세요.\nmergedArray = [...new Set(mergedArray)];\n\n// 5. (선택사항) 평탄화 (Flatten)\n// 만약 [[\"A\"], [\"B\"]] 처럼 중첩된 배열이 들어온다면 한 줄로 폅니다.\nmergedArray = mergedArray.flat();\n\n// 6. 최종 결과 반환\nreturn [\n  {\n    json: {\n      sourceNodes: nodeNames, // 참고용\n      targetKey: targetKey,   // 참고용\n      // 여기가 진짜 합쳐진 데이터입니다.\n      combinedResult: mergedArray,\n      // 개수도 같이 알고 싶다면\n      totalCount: mergedArray.length\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        352,
+        0
+      ],
+      "id": "e041bc7c-e9a8-4584-b161-f393452ba02e",
+      "name": "Code in JavaScript1",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        192,
+        0
+      ],
+      "id": "5c84cdee-8efd-4770-8396-2808c444b4a5",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-03T04:10:29.815Z",
+      "createdAt": "2025-12-03T04:10:29.815Z",
+      "role": "workflow:owner",
+      "workflowId": "1Y7JAkjPLdXzoL3d",
+      "projectId": "fXIt88XxLulj28GO"
+    }
+  ],
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [
+    {
+      "updatedAt": "2025-12-04T03:16:25.179Z",
+      "createdAt": "2025-12-04T03:16:25.179Z",
+      "id": "ZP7W67IQvc91HVCv",
+      "name": "news"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-12-04T03:16:26.974Z",
+  "versionId": "12839021-257b-435b-9f4d-82ca0263dfa9"
+}
