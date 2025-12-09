@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-04T04:05:56.253Z",
-    "createdAt": "2025-12-04T04:05:56.253Z",
-    "versionId": "12839021-257b-435b-9f4d-82ca0263dfa9",
+    "updatedAt": "2025-12-05T04:12:43.898Z",
+    "createdAt": "2025-12-05T04:12:43.898Z",
+    "versionId": "74137048-25e4-4e48-8334-be7f4f899ed1",
     "workflowId": "1Y7JAkjPLdXzoL3d",
     "nodes": [
       {
@@ -37,8 +37,8 @@
         "type": "n8n-nodes-base.slack",
         "typeVersion": 2.3,
         "position": [
-          704,
-          0
+          752,
+          -144
         ],
         "id": "a4baac72-b808-4fd6-97f0-493d864ae3fa",
         "name": "Send a message",
@@ -310,11 +310,11 @@
         ]
       }
     },
-    "authors": "system migration",
+    "authors": "현윤 조",
     "name": null,
     "description": null
   },
-  "activeVersionId": "12839021-257b-435b-9f4d-82ca0263dfa9",
+  "activeVersionId": "74137048-25e4-4e48-8334-be7f4f899ed1",
   "connections": {
     "When clicking ‘Execute workflow’": {
       "main": [
@@ -448,8 +448,8 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        704,
-        0
+        752,
+        -144
       ],
       "id": "a4baac72-b808-4fd6-97f0-493d864ae3fa",
       "name": "Send a message",
@@ -654,6 +654,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-04T03:16:26.974Z",
-  "versionId": "12839021-257b-435b-9f4d-82ca0263dfa9"
+  "updatedAt": "2025-12-05T04:12:43.895Z",
+  "versionId": "74137048-25e4-4e48-8334-be7f4f899ed1"
 }
